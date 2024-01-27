@@ -1,7 +1,9 @@
+%See bottom for updates
+
 % Relative Vorticity dv/dx - du/dy Function
 % Current function goes through all levels, will need to adjust for
 % geostrophic
-function RVort = zeta(u_component,v_component)
+function RVort = rel_vort(u_component,v_component)
     y = linspace(-90,90,73); %Define y for dy
     x = linspace(-180,177.5,144)'; %Define x for dx
         for i = 1:143 %Go through all LON values
@@ -16,4 +18,13 @@ function RVort = zeta(u_component,v_component)
                 end
             end
         end
-        end
+end
+
+%Oversimplified Version for single values or anything that doesn't have several dimensions
+function output = rel_vort(dx,dy,du,dv)
+    dvdx = dv./dx;
+    dudy = du./dy;
+    output = dvdx - dudy;
+end
+
+%01/27/2024: MATLAB includes zeta function for Reimann zeta function. Renamed function to rel_vort to avoid confusion. Included oversimplifed version where dx,dy,du, and dv are known.
