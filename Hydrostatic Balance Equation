@@ -1,0 +1,45 @@
+%Functions to solve variables in Hydrostatic Equilibrium Equation
+% dp/dz = -rho*g
+%Version 1: Variables (dp,dz,rho) Known
+function output = hydrostatic(var1,var2,input1,input2)
+    g = -9.8; %gravity (m/s^2)
+    %Inputs are:
+    % 1 = dp (Pa)
+    % 2 = dz (m)
+    % 3 = rho (kg/m^3)
+    if input1 == 1 && input2 == 2
+        output = "rho (kg/m^3) = " + -(var1/(var2*g));
+    elseif input1 == 2 && input2 == 1
+        output = "rho (kg/m^3) = " + -(var2/(var1*g));
+    elseif input1 == 1 && input2 == 3
+        output = "dz (m) = " + -var1/(var2*g);
+    elseif input1 == 3 && input2 == 1
+        output = "dz (m) = " + -var2/(var1*g);
+    elseif input1 == 2 && input2 == 3 || input1 == 3 && input2 ==2
+        output = "dp (Pa) = " + -(var1*var2*g);
+    end
+end
+
+%Version of dp/dz = -rho*g will be skipped as that is just -rho*g
+
+%Version 2: Integral Version. p,z,or rho are known
+function output = hydrostatic(var1,var2,input1,input2)
+    % Inputs are:
+    % 1 = p (Pa) An array of at least two elements
+    % 2 = z (m) An array of at least two elements
+    % 3 = rho (kg/m^3) A constat
+    g = -9.8; %gravity (m/s^2)
+    if input1 == 1 && input2 == 2
+        output = "rho (kg/m^3) = " + diff(var1)*(-diff(var2)*g);
+    elseif input1 == 2 && input2 == 1
+        output = "rho (kg/m^3) = " + diff(var2)*(-diff(var1)*g);
+    elseif input1 == 1 && input2 == 3
+        output = "dz (m) = " + diff(var1)/(-var2*g);
+    elseif input1 == 3 && input2 == 1
+        output = "dz (m) = " + diff(var2)./(-var1*g);
+    elseif input1 == 2 && input2 == 3
+        output = "dp (Pa) = " + diff(var1)*(-var2*g);
+    elseif input1 == 3 && input2 == 2
+        output = "dp (Pa) = " + diff(var2)*(-var1*g);       
+    end
+end
