@@ -1,0 +1,42 @@
+function output = Poisson(var1,var2,input1,input2,input3,var3)
+    %input3 is 1 for dry air, 2 for moist air
+    p0 = 10000; %Pa
+    Kd = 0.2854; %Gas constant for DRY AIR ONLY
+    e = 2.71828; %Because for some reason e isn't built into MATLAB
+    % Values for inputs1 and inputs 2 are blow, THEY MUST MATCH WITH
+    % variables
+    % 1 = Temperature (K)
+    % 2 = Potential Temperature (K)
+    % 3 = Pressure (Pa)
+    % IF YOU SELECT 2 FOR input3 YOU MUST INCLUDE MIXING RATIO FOR var3
+    if input3 == 1
+        if input1 == 2 && input2 == 3
+            output = "Temperature (K) " + var1*((var2/p0)^Kd);
+        elseif input1 == 3 && input2 == 2
+            output = "Temperature (K) " + var2*((var1/p0)^Kd);
+        elseif input1 == 1 && input2 == 3
+            output = "Potential Temperature (K) " + ((1/var1)*((var2/p0)^Kd))^-1;
+        elseif input1 == 3 && input2 == 1
+            output = "Potential Temperature (K) " + ((1/var2)*((var1/p0)^Kd))^-1;
+        elseif input1 == 1 && input2 == 2
+            output = "Pressure (Pa) = " + p0*((var1/var2)^(1/Kd));
+        elseif input1 == 2 && input2 == 1
+            output = "Pressure (Pa) = " + p0*((var2/var1)^(1/Kd));
+        end
+    elseif input3 == 2
+        Km = 0.2854*(1-0.24*var3); %Poissan Gas Constant for Moist Air, var3 is mixing ratio
+        if input1 == 2 && input2 == 3
+            output = "Temperature (K) " + var1*((var2/p0)^Km);
+        elseif input1 == 3 && input2 == 2
+            output = "Temperature (K) " + var2*((var1/p0)^Km);
+        elseif input1 == 1 && input2 == 3
+            output = "Potential Temperature (K) " + ((1/var1)*((var2/p0)^Km))^-1;
+        elseif input1 == 3 && input2 == 1
+            output = "Potential Temperature (K) " + ((1/var2)*((var1/p0)^Km))^-1;
+        elseif input1 == 1 && input2 == 2
+            output = "Pressure (Pa) = " + p0*((var1/var2)^(1/Km));
+        elseif input1 == 2 && input2 == 1
+            output = "Pressure (Pa) = " + p0*((var1/var2)^(1/Km));
+        end
+    end
+end
