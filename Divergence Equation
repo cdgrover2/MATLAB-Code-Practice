@@ -1,7 +1,7 @@
 % Divergence Equation dF/dx + dF/dy
 % Adjust as needed depending on dimensions used
 
-function divergence = div(var) %var assumed to be 4D (LON,LAT,Pressure LEV, time)
+function divergence = mydiv(var) %var assumed to be 4D (LON,LAT,Pressure LEV, time)
     y = linspace(-90,90,73); %Define y for dy
     x = linspace(-180,177.5,144)'; %Define x for dx
     dx = (diff(x)*111000*cos(y*(pi/180))); %Define dx
@@ -20,3 +20,12 @@ function divergence = div(var) %var assumed to be 4D (LON,LAT,Pressure LEV, time
         end
     end
 end
+
+%Oversimplified version
+function divergence = mydiv(dx,dy,du,dv)
+    dudx = du./dx;
+    dvdy = dv./dy;
+    divergence = dudx + dvdy;
+end
+
+%01/27/2024: div function is built into MATLAB. Changed function name to mydiv to avoid confusion. Oversimplified version included.
