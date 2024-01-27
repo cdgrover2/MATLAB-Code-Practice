@@ -1,5 +1,3 @@
-%See bottom for updates
-
 % Relative Vorticity dv/dx - du/dy Function
 % Current function goes through all levels, will need to adjust for
 % geostrophic
