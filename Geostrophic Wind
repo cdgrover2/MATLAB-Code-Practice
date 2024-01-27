@@ -25,3 +25,13 @@ function [ug,vg] = geofunc(var) %var is variable (geopotential heights)
             end
         end
     end
+
+%Oversimplified version
+function output = geofunc(dx,dy,dh,f)
+    g = 9.8 %gravity
+    ug = -g./f * (dh/dx);
+    vg = g./f * (dh/dy);
+    output = [ug,vg]
+end
+
+%01/27/2024: Oversimplified version included.
