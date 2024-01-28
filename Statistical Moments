@@ -1,0 +1,32 @@
+function output = OneMoment(dataset,dim_n)
+    %Inputs: dataset = your data, dim_n = number of dimensions
+    if dim_n == 1
+        output1 = "Mean = " + mean(dataset);
+        output2 = "Variance = " + var(dataset);
+        output3 = "Standard Deviation = " + std(dataset);
+        output4 = "Skewness = " + skewness(dataset);
+        output5 = "Kurtosis = " + kurtosis(dataset);
+        output = [output1;output2;output3;output4;output5];
+    elseif dim_n == 2
+        output1 = "Mean = " + mean(mean((dataset)));
+        output2 = "Variance = " + var(var((dataset)));
+        output3 = "Standard Deviation = " + std(std((dataset)));
+        output4 = "Skewness = " + skewness(skewness((dataset)));
+        output5 = "Kurtosis = " + kurtosis(kurtosis((dataset)));
+        output = [output1;output2;output3;output4;output5];
+    elseif dim_n == 3
+        output1 = "Mean = " + mean(mean(mean((dataset))));
+        output2 = "Variance = " + var(var(var((dataset))));
+        output3 = "Standard Deviation = " + std(std(std((dataset))));
+        output4 = "Skewness = " + skewness(skewness(skewness((dataset))));
+        output5 = "Kurtosis = " + kurtosis(kurtosis(kurtosis((dataset))));
+        output = [output1;output2;output3;output4;output5];
+    elseif dim_n == 4
+        output1 = "Mean = " + mean(mean(mean(mean((dataset)))));
+        output2 = "Variance = " + var(var(var(var((dataset)))));
+        output3 = "Standard Deviation = " + std(std(std(std((dataset)))));
+        output4 = "Skewness = " + skewness(skewness(skewness(skewness((dataset)))));
+        output5 = "Kurtosis = " + kurtosis(kurtosis(kurtosis(kurtosis((dataset)))));
+        output = [output1;output2;output3;output4;output5];
+    end
+end
