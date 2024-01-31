@@ -1,6 +1,30 @@
 % The following code is for the Geostrophic Winds using NCEP Reanalysis data from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis/pressure/
-% Still working to see if it works well since personal computer is slow
 
+function [ug,vg] = geofunc(LON,LAT,var) %var is variable (geopotential height)
+    %Function is for 
+    g = 9.8; %define gravity
+    dx = ((diff(LON).*111000).*cos(LAT*(pi/180)))';
+    dy = (diff(LAT).*111000)';
+    dhdx = diff(var,1,1);
+    dhdy = diff(var,1,2);
+
+    f0 = 1.4584e-04.*sin(LAT); %define Coriolis parameter
+    f0(37) = 0.00000001; %Set REALLY small to avoid +/-Inf problem
+    a = -g./f0;
+    b = g./f0;
+
+    DhDx = dhdx./dx;
+    DhDy = dhdy./dy;
+
+    for s = 1:73
+        ug = a(s)'*DhDx;
+    end
+
+    for s = 1:72
+        vg = b(s)'*DhDy;
+    end
+
+%CODE BELOW IS OBSOLETE
 function [output1,output2] = geofunc(var) %var is variable (geopotential heights)
     g = 9.8; %define gravity
     y = linspace(-90,90,73); %Define y for dy
@@ -25,6 +49,7 @@ function [output1,output2] = geofunc(var) %var is variable (geopotential heights
             end
         end
     end
+%CODE ABOVE IS OBSOLETE
 
 %Oversimplified version
 function output = geofunc(dx,dy,dh,f)
