@@ -1,7 +1,6 @@
 % The following code is for the Geostrophic Winds using NCEP Reanalysis data from https://downloads.psl.noaa.gov/Datasets/ncep.reanalysis/pressure/
 
 function [ug,vg] = geofunc(LON,LAT,var) %var is variable (geopotential height)
-    %Function is for 
     g = 9.8; %define gravity
     dx = ((diff(LON).*111000).*cos(LAT*(pi/180)))';
     dy = (diff(LAT).*111000)';
