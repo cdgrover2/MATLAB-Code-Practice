@@ -1,4 +1,16 @@
 % Relative Vorticity dv/dx - du/dy Function
+function RVort = rel_vort(LON,LAT,u_component,v_component)
+    dx = ((diff(LON).*111000).*cos(LAT*(pi/180)))';
+    dy = (diff(LAT).*111000)';
+    dug = diff(u_component);
+    dvg = diff(v_component);
+    Term1 = dvg./dx(:,1:72);
+    Term2 = dug(:,1:72,:,:)./dy;
+    RVort = Term1(1:142,:,:,:) - Term2;
+end
+
+
+%CODE BELOW  IS OBSOLETE
 % Current function goes through all levels, will need to adjust for
 % geostrophic
 function RVort = rel_vort(u_component,v_component)
@@ -17,6 +29,7 @@ function RVort = rel_vort(u_component,v_component)
             end
         end
 end
+%CODE ABOVE IS OBSOLETE
 
 %Oversimplified Version for single values or anything that doesn't have several dimensions
 function output = rel_vort(dx,dy,du,dv)
