@@ -27,7 +27,7 @@ function output = hydrostatic(var1,var2,input1,input2)
     % Inputs are:
     % 1 = p (Pa) An array of at least two elements
     % 2 = z (m) An array of at least two elements
-    % 3 = rho (kg/m^3) A constat
+    % 3 = rho (kg/m^3) A constant
     g = -9.8; %gravity (m/s^2)
     if input1 == 1 && input2 == 2
         output = "rho (kg/m^3) = " + diff(var1)*(-diff(var2)*g);
