@@ -1,7 +1,7 @@
 % Divergence Equation dF/dx + dF/dy
 % Adjust as needed depending on dimensions used
 
-function divergence = mydiv(var) %var assumed to be 4D (LON,LAT,Pressure LEV, time)
+function divergence = mydiv(var) %var assumed to be 5D (LON,LAT,Pressure LEV, time)
     y = linspace(-90,90,73); %Define y for dy
     x = linspace(-180,177.5,144)'; %Define x for dx
     dx = (diff(x)*111000*cos(y*(pi/180))); %Define dx
