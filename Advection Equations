@@ -9,20 +9,6 @@ function output = advec(dx,dy,Fx,Fy)
     end
 end
 
-%Version 2, taking the derivatives
-%Loop functions would need to be included if assessing large datasets
-%Will need to adjust depending on specific dimensions
-function output = advec(x,y,var1,var2)
-    if ~exist('var2','var') %if var1 is just a scalar variable like T
-        output1 = diff(var1)/diff(x);
-        output2 = diff(var1)/diff(y);
-    elseif exist('Fy','var') %if variable is make up of i and j components
-        output1 = diff(var1,1,1)/diff(x);
-        output2 = diff(var2,1,2)/diff(y);
-        output = [output1,output2];
-    end
-end
-
 %Version 3, directional derivative Gx(dF/dx) + Gy(dF/dy)
 %Dimensions will need to be adjusted as needed for function to work
 function output = advec(x,y,F,Gx,Gy)
