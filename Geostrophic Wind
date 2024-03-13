@@ -2,8 +2,8 @@
 
 function [ug,vg] = geofunc(LON,LAT,var) %var is variable (geopotential height)
     g = 9.8; %define gravity
-    dx = ((diff(LON).*111000).*cos(LAT*(pi/180)))';
-    dy = (diff(LAT).*111000)';
+    dx = ((diff(LON).*111000).*cos(LAT*(pi/180)));
+    dy = (diff(LAT).*111000);
     dhdx = diff(var,1,1);
     dhdy = diff(var,1,2);
 
