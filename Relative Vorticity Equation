@@ -1,7 +1,7 @@
 % Relative Vorticity dv/dx - du/dy Function
 function RVort = rel_vort(LON,LAT,u_component,v_component)
-    dx = ((diff(LON).*111000).*cos(LAT*(pi/180)))';
-    dy = (diff(LAT).*111000)';
+    dx = ((diff(LON).*111000).*cos(LAT*(pi/180)));
+    dy = (diff(LAT).*111000);
     dug = diff(u_component);
     dvg = diff(v_component);
     Term1 = dvg./dx(:,1:72);
