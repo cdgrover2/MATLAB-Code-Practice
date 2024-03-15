@@ -1,3 +1,81 @@
+%Third Draft 03/15/2024
+% QG Omega Equation, Bluestein Version
+function output = QGOmega(LON,LAT,var,LEV1,LEV2)
+    %Inputs are the LON/LAT gridpoints, and geopotential height
+    %and the two pressure levels for the thickness
+    %LEV1 should be lower level
+    %LEV2 should be upper level
+    %Output is omega (Pa/s)
+    
+
+    %Define dx and dy for future reference
+    dx = ((diff(LON).*111000).*cos(LAT*(pi/180)));
+    dy = (diff(LAT).*111000);
+    
+    %Calculate Steam Function, based on AMS: https://glossary.ametsoc.org/wiki/Streamfunction#:~:text=A%20parameter%20of%20two%2Ddimensional,is%20constant%20along%20each%20streamline.&text=In%20meteorology%20the%20most%20common,the%20assumption%20of%20geostrophic%20equilibrium.
+    f0 = 10e-4; %Coriolis constant (s^-1)
+    psi_0 = var/f0;
+    
+    %Call the functions to calculate geostrophic wind and vorticity
+    [ug,vg] = geofunc(LON,LAT,psi_0);
+    RVort = rel_vort(LON,LAT,ug,vg);
+    
+
+    %Term 1, Vorticity Advection by Geostrophic Wind
+    %First Level to compare
+    %AVort1 = RVort(:,:,LEV1,:) + f(1:72);
+    AVort1 = RVort(:,:,LEV1,:) + f0;
+    AVortx1 = diff(AVort1,1,1);
+    AVorty1 = diff(AVort1,1,2);
+    delAVortx1 = AVortx1./dx(1:141,1:72);
+    delAVorty1 = AVorty1./dy(1:71);
+    GGVortX1 = ug(1:141,1:72,LEV1,:).*delAVortx1;
+    GGVortY1 = vg(1:142,1:71,LEV1,:).*delAVorty1;
+    T1P1 = -(GGVortX1(:,1:71,:,:) + GGVortY1(1:141,:,:,:));
+    
+    %Second Level to compare
+    %AVort2 = RVort(:,:,LEV2,:) + f(1:72);
+    AVort2 = RVort(:,:,LEV2,:) + f0;
+    AVortx2 = diff(AVort2,1,1);
+    AVorty2 = diff(AVort2,1,2);
+    delAVortx2 = AVortx2./dx(1:141,1:72);
+    delAVorty2 = AVorty2./dy(1:71);
+    GGVortX2 = ug(1:141,1:72,LEV2,:).*delAVortx2;
+    GGVortY2 = vg(1:142,1:71,LEV2,:).*delAVorty2;
+    T1P2 = -(GGVortX2(:,1:71,:,:) + GGVortY2(1:141,:,:,:));
+    
+    Levels = [1000;925;850;700;600;500;400;300;250;200;150;100;50];
+        
+
+    Term1 = (f0.*(T1P2 - T1P1))/((Levels(LEV2)-Levels(LEV1))*100);
+
+    %Term 2: Thermal Advection by Geostrophic Wind
+    psi_L1 = psi_0(:,:,LEV1,:);
+    psi_L2 = psi_0(:,:,LEV2,:);
+
+    dpsiDp = -(psi_L2 - psi_L1)/((Levels(LEV2)-Levels(LEV1))*100);
+
+    dpsiDpX = diff(dpsiDp,1,1);
+    dpsiDpY = diff(dpsiDp,1,2);
+
+    dpsiDpDX = dpsiDpX./dx;
+    dpsiDpDY = dpsiDpY./dy;
+
+    Udpsi = dpsiDpDX.*ug(:,:,5,:);
+    Vdpsi = dpsiDpDY.*vg(:,:,5,:);
+
+    %Apply the Laplacian
+    Du = -(diff(diff(Udpsi,1,1),1,1));
+    Dv = -(diff(diff(Vdpsi,1,2),1,2));
+
+    Term2 = (Du(:,1:70,:,:) + Dv(1:141,:,:,:));
+    
+    %Output is omega (Pa/s)
+    output = Term1(:,1:70,:,:) + Term2;
+    
+
+end
+
 % Second Draft, 03/13/2024
 % QG Omega Equation, Trenberth Version
 function output = QGOmega(LON,LAT,var,LEV1,LEV2)
